@@ -1,3 +1,5 @@
+package org.example;
+
 /**
  * A food object that is the type and name of food you want.
  */
