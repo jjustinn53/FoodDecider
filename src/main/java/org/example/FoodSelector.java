@@ -127,7 +127,7 @@ public class FoodSelector {
                 switch (choice) {
                     case "1", "one":
                         for (List<Food> foods : foods.values()) {
-                            System.out.println(capitalize(capitalize(foods.get(0).getFoodType()) + ": ");
+                            System.out.println(capitalize(capitalize(foods.get(0).getFoodType().toString())) + ": ");
                             for (Food food : foods) {
                                 System.out.println(capitalize(food.toString()));
                             }
