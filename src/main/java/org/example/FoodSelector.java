@@ -10,6 +10,8 @@ public class FoodSelector {
     private Food selectedFood;
     private static HashMap<String, List<Food>> foods = new HashMap<>();
 
+    Scanner scanner = new Scanner(System.in);
+
     public FoodSelector() {
 
     }
@@ -27,7 +29,6 @@ public class FoodSelector {
             System.out.println("5. Exit");
             System.out.println("Enter your choice: ");
 
-            Scanner scanner = new Scanner(System.in);
             choice = scanner.nextLine().toLowerCase().trim();
 
             switch (choice) {
@@ -48,11 +49,11 @@ public class FoodSelector {
 
 
         } while(!choice.equals("5") );
+
     }
 
-    public void addFood() {
+    public HashMap<String, List<Food>> addFood() {
         System.out.println("Enter Food Type: ");
-        Scanner scanner = new Scanner(System.in);
         String foodType = scanner.nextLine().trim().toLowerCase();
         System.out.println("Enter Food Name: ");
         String foodName = scanner.nextLine().trim().toLowerCase();
@@ -65,23 +66,36 @@ public class FoodSelector {
             foodList.add(food);
             foods.put(foodType, foodList);
         }
+        return foods;
     }
 
-    public void removeFood() {
+    public HashMap<String, List<Food>> removeFood() {
+        if(foods.isEmpty()) {
+            System.out.println("List is empty, cannot remove foods.\n");
+            return foods;
+        }
         System.out.println("Enter Food Type: ");
-        Scanner scanner = new Scanner(System.in);
-        String foodType = scanner.nextLine();
+        String foodType = scanner.nextLine().trim().toLowerCase();
         System.out.println("Enter Food Name: ");
         String foodName = scanner.nextLine().trim().toLowerCase();
         Food food = new Food(foodType, foodName);
-        foods.get(foodType).remove(food);
+        if(foods.get(foodType) != null && foods.get(foodType).contains(food)) {
+            foods.get(foodType).remove(food);
+            System.out.println("Food removed.");
+        } else {
+            System.out.println("Food does not exist.");
+        }
+        return foods;
 
     }
 
-    public void selectFood() {
+    public Food selectFood() {
+        if(foods.isEmpty()) {
+            System.out.println("Food list is empty!\n");
+            return null;
+        }
         Random rand = new Random();
         System.out.println("Select Food Type (1) or Meal (2)?");
-        Scanner scanner = new Scanner(System.in);
         String choice = scanner.nextLine().trim().toLowerCase();
         String[] foodTypes = foods.keySet().toArray(new String[0]);
         int randomIndex = rand.nextInt(foodTypes.length);
@@ -100,40 +114,48 @@ public class FoodSelector {
         } else {
             System.out.println("Meal: " + foods.get(foodTypes[randomIndex]).get(randomIndex) + "\n");
         }
+        selectedFood = foods.get(foodTypes[randomIndex]).get(randomIndex);
+        return selectedFood;
     }
 
-    public void viewFoods() {
-        String choice = "";
-        Scanner scanner = new Scanner(System.in);
-
-        while(!choice.equals("3") || !choice.equals("three")) {
-            System.out.println("1. To View All Foods");
-            System.out.println("2. To View Specific Type of Food");
-            System.out.println("3. To Exit");
-
-
-            choice = scanner.nextLine().trim().toLowerCase();
-            switch (choice) {
-                case "1", "one":
-                    for (List<Food> foods : foods.values()) {
-                        System.out.println(foods.get(0).getFoodType() + ": ");
-                        for (Food food : foods) {
-                            System.out.println(food);
-                        }
-                    }
-                    break;
-                case "2", "two":
-                    System.out.println("Enter Food Type: ");
-                    String foodType = scanner.nextLine().trim().toLowerCase();
-                    for (Food food : foods.get(foodType)) {
-                        System.out.println(foodType + ": ");
-                        System.out.println(food);
-                    }
-                    break;
-                case "3", "three":
-                    break;
-            }
+    public HashMap<String, List<Food>> viewFoods() {
+        if(foods.isEmpty()) {
+            System.out.println("Food list is empty! Nothing to view.\n");
+            return foods;
         }
+        String choice = "";
+
+            do {
+                System.out.println("1. To View All Foods");
+                System.out.println("2. To View Specific Type of Food");
+                System.out.println("3. To Exit");
+
+
+                choice = scanner.nextLine().trim().toLowerCase();
+                switch (choice) {
+                    case "1", "one":
+                        for (List<Food> foods : foods.values()) {
+                            System.out.println(foods.get(0).getFoodType() + ": ");
+                            for (Food food : foods) {
+                                System.out.println(food);
+                            }
+                        }
+                        break;
+                    case "2", "two":
+                        System.out.println("Enter Food Type: ");
+                        String foodType = scanner.nextLine().trim().toLowerCase();
+                        for (Food food : foods.get(foodType)) {
+                            System.out.println(foodType + ": ");
+                            System.out.println(food);
+                            selectedFood = food;
+                        }
+                        break;
+                    case "3", "three":
+                        break;
+                }
+            } while (!choice.equals("3") || !choice.equals("three"));
+
+        return foods;
     }
     public  Food getSelectedFood() {
         return selectedFood;

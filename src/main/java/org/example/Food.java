@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Objects;
+
 /**
  * A food object that is the type and name of food you want.
  */
@@ -26,6 +28,17 @@ public class Food {
 
     public void setFoodName(String foodName) {
         this.foodName = foodName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Food food)) return false;
+        return Objects.equals(foodType, food.foodType) && Objects.equals(foodName, food.foodName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(foodType, foodName);
     }
 
     @Override
