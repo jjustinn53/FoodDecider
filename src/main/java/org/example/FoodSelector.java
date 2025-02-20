@@ -83,7 +83,7 @@ public class FoodSelector {
         System.out.println("Enter Number to Remove: ");
         String number = scanner.nextLine().trim();
 
-        String foodType = foodTypes.get(Integer.parseInt(number));
+        String foodType = foodTypes.get(Integer.parseInt(number) - 1);
         List<Food> foodList = foods.get(foodType);
         for(int i = 0; i < foodList.size(); i++) {
             System.out.println((i+1) + ". " + capitalize(foodList.get(i).toString()));
