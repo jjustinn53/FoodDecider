@@ -74,14 +74,25 @@ public class FoodSelector {
             System.out.println("List is empty, cannot remove foods.\n");
             return foods;
         }
-        int index = 0;
-        for(String type : foods.keySet()) {
-            System.out.println(index + ". " + capitalize(type));
-            index++;
+        List<String> foodTypes = new ArrayList<>(foods.keySet());
+
+        for(int i = 0; i < foodTypes.size(); i++) {
+            System.out.println((i+1) + ". " + capitalize(foodTypes.get(i)));
         }
-        for(int i = 0; i < foods.size(); i++) {
-            System.out.println((i+1) + ". " + foods.get(i));
+
+        System.out.println("Enter Number to Remove: ");
+        String number = scanner.nextLine().trim();
+
+        String foodType = foodTypes.get(Integer.parseInt(number));
+        List<Food> foodList = foods.get(foodType);
+        for(int i = 0; i < foodList.size(); i++) {
+            System.out.println((i+1) + ". " + capitalize(foodList.get(i).toString()));
         }
+
+        System.out.println("Enter Number to Remove: ");
+        String number2 = scanner.nextLine().trim();
+        foodList.remove(Integer.parseInt(number2) - 1);
+
         return foods;
     }
 
