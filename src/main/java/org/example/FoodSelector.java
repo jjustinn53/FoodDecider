@@ -74,7 +74,11 @@ public class FoodSelector {
             System.out.println("List is empty, cannot remove foods.\n");
             return foods;
         }
-
+        int index = 0;
+        for(String type : foods.keySet()) {
+            System.out.println(index + ". " + capitalize(type));
+            index++;
+        }
         for(int i = 0; i < foods.size(); i++) {
             System.out.println((i+1) + ". " + foods.get(i));
         }
@@ -127,7 +131,7 @@ public class FoodSelector {
                 switch (choice) {
                     case "1", "one":
                         for (List<Food> foods : foods.values()) {
-                            System.out.println(capitalize(capitalize(foods.get(0).getFoodType().toString())) + ": ");
+                            System.out.println(capitalize(capitalize(foods.get(0).getFoodType())) + ": ");
                             for (Food food : foods) {
                                 System.out.println(capitalize(food.toString()));
                             }
