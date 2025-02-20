@@ -74,19 +74,26 @@ public class FoodSelector {
             System.out.println("List is empty, cannot remove foods.\n");
             return foods;
         }
-        System.out.println("Enter Food Type: ");
-        String foodType = scanner.nextLine().trim().toLowerCase();
-        System.out.println("Enter Food Name: ");
-        String foodName = scanner.nextLine().trim().toLowerCase();
-        Food food = new Food(foodType, foodName);
-        if(foods.get(foodType) != null && foods.get(foodType).contains(food)) {
-            foods.get(foodType).remove(food);
-            System.out.println("Food removed.");
-        } else {
-            System.out.println("Food does not exist.");
-        }
-        return foods;
+        List<String> foodTypes = new ArrayList<>(foods.keySet());
 
+        for(int i = 0; i < foodTypes.size(); i++) {
+            System.out.println((i+1) + ". " + capitalize(foodTypes.get(i)));
+        }
+
+        System.out.println("Enter Number to Remove: ");
+        String number = scanner.nextLine().trim();
+
+        String foodType = foodTypes.get(Integer.parseInt(number) - 1);
+        List<Food> foodList = foods.get(foodType);
+        for(int i = 0; i < foodList.size(); i++) {
+            System.out.println((i+1) + ". " + capitalize(foodList.get(i).toString()));
+        }
+
+        System.out.println("Enter Number to Remove: ");
+        String number2 = scanner.nextLine().trim();
+        foodList.remove(Integer.parseInt(number2) - 1);
+
+        return foods;
     }
 
     public Food selectFood() {
@@ -103,7 +110,7 @@ public class FoodSelector {
         if(choice.equals("1")) {
             String foodType = foodTypes[randomIndex];
 
-            System.out.println("Selected Food Type: " + foodType);
+            System.out.println("Selected Food Type: " + capitalize(foodType));
             System.out.println("Do you want me to select the meal too? (Y/N)");
 
             choice = scanner.nextLine().trim().toLowerCase();
@@ -112,7 +119,7 @@ public class FoodSelector {
                 System.out.println("Meal: " + foods.get(foodType).get(randomIndex));
             }
         } else {
-            System.out.println("Meal: " + foods.get(foodTypes[randomIndex]).get(randomIndex) + "\n");
+            System.out.println("Meal: " + capitalize(foods.get(foodTypes[randomIndex]).get(randomIndex).toString()) + "\n");
         }
         selectedFood = foods.get(foodTypes[randomIndex]).get(randomIndex);
         return selectedFood;
@@ -135,9 +142,9 @@ public class FoodSelector {
                 switch (choice) {
                     case "1", "one":
                         for (List<Food> foods : foods.values()) {
-                            System.out.println(foods.get(0).getFoodType() + ": ");
+                            System.out.println(capitalize(capitalize(foods.get(0).getFoodType())) + ": ");
                             for (Food food : foods) {
-                                System.out.println(food);
+                                System.out.println(capitalize(food.toString()));
                             }
                         }
                         break;
@@ -145,9 +152,8 @@ public class FoodSelector {
                         System.out.println("Enter Food Type: ");
                         String foodType = scanner.nextLine().trim().toLowerCase();
                         for (Food food : foods.get(foodType)) {
-                            System.out.println(foodType + ": ");
-                            System.out.println(food);
-                            selectedFood = food;
+                            System.out.println(capitalize(foodType) + ": ");
+                            System.out.println(capitalize(food.toString()));
                         }
                         break;
                     case "3", "three":
@@ -157,6 +163,11 @@ public class FoodSelector {
 
         return foods;
     }
+
+    public String capitalize(String input) {
+        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
+    }
+
     public  Food getSelectedFood() {
         return selectedFood;
     }
